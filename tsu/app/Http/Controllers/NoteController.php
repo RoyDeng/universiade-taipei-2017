@@ -56,8 +56,8 @@ class NoteController extends Controller {
 		return back() -> with('success', '修改成功！');
 	}
 
-	public function removeNotification(Request $request) {
-		$notification = Notification::find($request -> id);
+	public function removeNote(Request $request) {
+		$notification = Note::find($request -> id);
 		$response = $notification -> delete();
 
 		return back() -> with('success', '刪除成功！');

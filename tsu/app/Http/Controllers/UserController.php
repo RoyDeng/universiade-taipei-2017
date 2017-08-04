@@ -87,7 +87,7 @@ class UserController extends Controller {
 
 	public function checkLog() {
 		$nts = Abnormal::where('created_time', '>=', Carbon::now() -> subDay(2)) -> orderBy('created_time', 'desc') -> get();
-		$logs = CheckLog::all();
+		$logs = CheckLog::orderBy('id', 'desc')->get();
 
 		return view('check_log', ['nts'=> $nts, 'logs' => $logs]);
 	}
