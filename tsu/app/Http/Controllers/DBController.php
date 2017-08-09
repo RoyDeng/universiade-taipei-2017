@@ -23,38 +23,43 @@ class DBController extends Controller {
 			'password' => $request -> password
 		))) {
 			$user = User::where('username', $request -> username) -> firstOrFail();
-			$username = $user -> username;
-			$period = time() + 3600 * 24 * 3;
-			$key = str_random(40);
-			$user -> token = substr(md5($username.$key.$period), -8).$period;
-			$user -> save();
-			$check_log = CheckLog::where('user_id', $user -> id) -> orderBy('id', 'desc') -> first();
-			$form = Form::where('user_id', $user -> id) -> orderBy('id', 'desc') -> first();
-			$is_check_in = false;
-			$check = false;
-			$is_check_out = false;
-			$is_check_eqpt = false;
+			$status = $user -> status;
+			if ($status == 0) {
+				return 'fail';
+			} else {
+				$username = $user -> username;
+				$period = time() + 3600 * 24 * 3;
+				$key = str_random(40);
+				$user -> token = substr(md5($username.$key.$period), -8).$period;
+				$user -> save();
+				$check_log = CheckLog::where('user_id', $user -> id) -> orderBy('id', 'desc') -> first();
+				$form = Form::where('user_id', $user -> id) -> orderBy('id', 'desc') -> first();
+				$is_check_in = false;
+				$check = false;
+				$is_check_out = false;
+				$is_check_eqpt = false;
 
-			if ($check_log != null) {
-				$item_detail_id = $check_log -> item_detail_id;
+				if ($check_log != null) {
+					$item_detail_id = $check_log -> item_detail_id;
 
-				if (substr($check_log -> check_in_time, 0, 10) == date('Y-m-d')) {
-					$check = ItemDetail::with('item', 'location') -> where('id', $item_detail_id) -> get();
-					$is_check_in = true;
+					if (substr($check_log -> check_in_time, 0, 10) == date('Y-m-d')) {
+						$check = ItemDetail::with('item', 'location') -> where('id', $item_detail_id) -> get();
+						$is_check_in = true;
+					}
+
+					if (substr($check_log -> check_out_time, 0, 10) == date('Y-m-d')) {
+						$is_check_out = true;
+					}
 				}
 
-				if (substr($check_log -> check_out_time, 0, 10) == date('Y-m-d')) {
-					$is_check_out = true;
+				if ($form != null) {
+					if (substr($form -> created_time, 0, 10) == date('Y-m-d')) {
+						$is_check_eqpt = true;
+					}
 				}
+
+				return json_encode(['user' => $user, 'is_check_in' => $is_check_in, 'check' => $check, 'is_check_out' => $is_check_out, 'is_check_eqpt' => $is_check_eqpt], JSON_UNESCAPED_UNICODE);
 			}
-
-			if ($form != null) {
-				if (substr($form -> created_time, 0, 10) == date('Y-m-d')) {
-					$is_check_eqpt = true;
-				}
-			}
-
-			return json_encode(['user' => $user, 'is_check_in' => $is_check_in, 'check' => $check, 'is_check_out' => $is_check_out, 'is_check_eqpt' => $is_check_eqpt], JSON_UNESCAPED_UNICODE);
 		} else {
 			return 'fail';
 		}
@@ -64,7 +69,7 @@ class DBController extends Controller {
 		$user = User::where('username', $request -> username) -> firstOrFail();
 
 		if ($request -> token == $user -> token) {
-			$data = ItemDetail::with('item', 'location') -> get();
+			$data = ItemDetail::with('item', 'location') -> where('status', 1) -> get();
 
 			return json_encode($data, JSON_UNESCAPED_UNICODE);
 		}
@@ -165,7 +170,7 @@ class DBController extends Controller {
 				DB::table('eqpt') -> insert($sql);
 			}
 
-			return $request -> eqpt;
+			return json_encode(['sql' => $sql], JSON_UNESCAPED_UNICODE);
 		}
 	}
 

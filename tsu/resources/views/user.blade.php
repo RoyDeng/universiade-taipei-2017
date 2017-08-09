@@ -44,6 +44,7 @@
 								<thead>
 									<tr>
 										<th>編號</th>
+										<th>狀態</th>
 										<th>姓名</th>
 										<th>階級</th>
 										<th>帳號</th>
@@ -56,6 +57,13 @@
 									@foreach ($users as $u => $user)
 									<tr>
 										<td>{{ $u + 1 }}</td>
+										<td>
+											@if ($user -> status == 1)
+											<span class="label label-success">登記</span>
+											@else
+											<span class="label label-danger">註銷</span>
+											@endif
+										</td>
 										<td>{{ $user -> name }}</td>
 										<td>
 											@if ($user -> level == 0)
@@ -69,9 +77,13 @@
 										<td>{{ $user -> email }}</td>
 										<td>
 											@if (Auth::user() -> level == 1)
-											<button type="button" class="btn btn-info" data-target="#editUserModal" data-toggle="modal" onclick="editUser('{{ $user -> id }}')"><i class="fa fa-pencil-square-o"></i></button>
-											<button type="button" class="btn btn-primary" data-target="#editPasswordModal" data-toggle="modal" onclick="editUser('{{ $user -> id }}')"><i class="fa fa-key"></i></button>
-											<button type="button" class="btn btn-danger" data-target="#removeUserModal" data-toggle="modal" onclick="editUser('{{ $user -> id }}')"><i class="fa fa-trash"></i></button>
+												@if ($user -> status == 1)
+													<button type="button" class="btn btn-info" data-target="#editUserModal" data-toggle="modal" onclick="editUser('{{ $user -> id }}')"><i class="fa fa-pencil-square-o"></i></button>
+													<button type="button" class="btn btn-primary" data-target="#editPasswordModal" data-toggle="modal" onclick="editUser('{{ $user -> id }}')"><i class="fa fa-key"></i></button>
+													<button type="button" class="btn btn-danger" data-target="#removeUserModal" data-toggle="modal" onclick="editUser('{{ $user -> id }}')"><i class="fa fa-times"></i></button>
+												@else
+													<button type="button" class="btn btn-success" data-target="#applyUserModal" data-toggle="modal" onclick="editUser('{{ $user -> id }}')"><i class="fa fa-check"></i></button>
+												@endif
 											@endif
 											<input type="hidden" name="hidden_view_detail" id="hidden_view_detail" value="{{url('/user/viewUser')}}">
 										</td>
@@ -282,15 +294,38 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">刪除工作人員</h4>
+				<h4 class="modal-title">註銷工作人員</h4>
 			</div>
 			<div class="modal-body">
 				<i class="fa fa-question-circle fa-lg"></i>  
-				您確定要刪除此工作人員？
+				您確定要註銷此工作人員？
 				<form action="{{ url('/user/removeUser') }}" method="post">
 					{{ csrf_field() }}
 					<input type="hidden" id="remove_user_id" name="id">
-					<button type="submit" class="btn btn-danger">刪除</button>
+					<button type="submit" class="btn btn-danger">註銷</button>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade col-xs-12" id="applyUserModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">登記工作人員</h4>
+			</div>
+			<div class="modal-body">
+				<i class="fa fa-question-circle fa-lg"></i>  
+				您確定要登記此工作人員？
+				<form action="{{ url('/user/applyUser') }}" method="post">
+					{{ csrf_field() }}
+					<input type="hidden" id="apply_user_id" name="id">
+					<button type="submit" class="btn btn-success">登記</button>
 				</form>
 			</div>
 			<div class="modal-footer">
@@ -318,6 +353,7 @@
 				$("#change_user_name").val(result.name);
 				$("#change_user_username").val(result.username);
 				$("#remove_user_id").val(result.id);
+				$("#apply_user_id").val(result.id);
 			}
 		});
 	}

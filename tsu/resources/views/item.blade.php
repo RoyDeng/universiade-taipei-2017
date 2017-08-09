@@ -60,10 +60,10 @@
 										<td>
 											<button type="button" class="btn btn-primary" onclick="location.href='{{url('/item_detail')}}/{{ $item -> id }}';"><i class="fa fa-eye"></i></button>
 											@if (Auth::user() -> level == 1)
-											<button type="button" class="btn btn-info" data-target="#editItemModal" data-toggle="modal" onclick="editItem('{{ $item -> id }}')"><i class="fa fa-pencil-square-o"></i></button>
-											@if ($item -> name != "ALL")
-											<button type="button" class="btn btn-danger" data-target="#removeItemModal" data-toggle="modal" onclick="editItem('{{ $item -> id }}')"><i class="fa fa-trash"></i></button>
-											@endif
+												<button type="button" class="btn btn-info" data-target="#editItemModal" data-toggle="modal" onclick="editItem('{{ $item -> id }}')"><i class="fa fa-pencil-square-o"></i></button>
+												@if ($item -> name != "ALL")
+													<!--<button type="button" class="btn btn-danger" data-target="#removeItemModal" data-toggle="modal" onclick="editItem('{{ $item -> id }}')"><i class="fa fa-trash"></i></button>-->
+												@endif
 											@endif
 											<input type="hidden" name="hidden_view" id="hidden_view" value="{{url('/item/viewItem')}}">
 										</td>

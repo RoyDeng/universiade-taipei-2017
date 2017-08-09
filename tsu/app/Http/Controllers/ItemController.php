@@ -131,10 +131,18 @@ class ItemController extends Controller {
 	}
 
 	public function removeItemDetail(Request $request) {
-		$form = Form::where('item_detail_id', $request -> id) -> delete();
 		$item = ItemDetail::find($request -> id);
-		$response = $item -> delete();
+		$item -> status = 0;
+		$item -> save();
 
-		return back() -> with('success', '刪除成功！');
+		return back() -> with('success', '註銷成功！');
+	}
+
+	public function applyItemDetail(Request $request) {
+		$item = ItemDetail::find($request -> id);
+		$item -> status = 1;
+		$item -> save();
+
+		return back() -> with('success', '登記成功！');
 	}
 }

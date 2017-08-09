@@ -80,9 +80,18 @@ class UserController extends Controller {
 
 	public function removeUser(Request $request) {
 		$user = User::find($request -> id);
-		$response = $user -> delete();
+		$user -> status = 0;
+		$user -> save();
 
-		return back() -> with('success', '刪除成功！');
+		return back() -> with('success', '註銷成功！');
+	}
+
+	public function applyUser(Request $request) {
+		$user = User::find($request -> id);
+		$user -> status = 1;
+		$user -> save();
+
+		return back() -> with('success', '登記成功！');
 	}
 
 	public function checkLog() {

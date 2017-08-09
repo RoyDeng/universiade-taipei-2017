@@ -14,6 +14,7 @@ Route::get('/item/viewItemDetail', 'ItemController@viewItemDetail');
 Route::post('/item/createItemDetail', 'ItemController@createItemDetail');
 Route::post('/item/updateItemDetail', 'ItemController@updateItemDetail');
 Route::post('/item/removeItemDetail', 'ItemController@removeItemDetail');
+Route::post('/item/applyItemDetail', 'ItemController@applyItemDetail');
 
 Route::get('/location', 'LocationController@index');
 Route::get('/location/viewLocation', 'LocationController@viewLocation');
@@ -45,6 +46,7 @@ Route::post('/user/createAdmin', 'UserController@createAdmin');
 Route::post('/user/updateUser', 'UserController@updateUser');
 Route::post('/user/updatePassword', 'UserController@updatePassword');
 Route::post('/user/removeUser', 'UserController@removeUser');
+Route::post('/user/applyUser', 'UserController@applyUser');
 Route::get('/check_log', 'UserController@checkLog');
 Route::get('/check_log/viewLog', 'UserController@viewLog');
 Route::post('/check_log/updateLog', 'UserController@updateLog');

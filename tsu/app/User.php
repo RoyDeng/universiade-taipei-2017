@@ -5,9 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-use \App\AcForm as AcFormEloquent;
-use \App\SignLog as SignLogEloquent;
-use \App\Session as SessionEloquent;
+use \App\Form as FormEloquent;
 
 class User extends Authenticatable {
     use Notifiable;
@@ -23,14 +21,6 @@ class User extends Authenticatable {
     ];
 
 	public function ac_form() {
-		return $this -> hasMany(AcFormEloquent::Class);
-	}
-
-	public function sign_log() {
-		return $this -> hasMany(SignLogEloquent::Class);
-	}
-
-	public function session() {
-		return $this -> hasOne(SessionEloquent::Class);
+		return $this -> hasMany(FormEloquent::Class);
 	}
 }

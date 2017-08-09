@@ -75,10 +75,10 @@
 										<td>{{ $location -> updated_time }}</td>
 										<td>
 											@if (Auth::user() -> level == 1)
-											<button type="button" class="btn btn-info" data-target="#editLocationModal" data-toggle="modal" onclick="editLocation('{{ $location -> id }}')"><i class="fa fa-pencil-square-o"></i></button>
-											@if ($location -> name != "ALL")
-											<button type="button" class="btn btn-danger" data-target="#removeLocationModal" data-toggle="modal" onclick="editLocation('{{ $location -> id }}')"><i class="fa fa-trash"></i></button>
-											@endif
+												<button type="button" class="btn btn-info" data-target="#editLocationModal" data-toggle="modal" onclick="editLocation('{{ $location -> id }}')"><i class="fa fa-pencil-square-o"></i></button>
+												@if ($location -> name != "ALL")
+													<!--<button type="button" class="btn btn-danger" data-target="#removeLocationModal" data-toggle="modal" onclick="editLocation('{{ $location -> id }}')"><i class="fa fa-trash"></i></button>-->
+												@endif
 											@endif
 											<input type="hidden" name="hidden_view" id="hidden_view" value="{{url('/location/viewLocation')}}">
 										</td>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機: 127.0.0.1
--- 產生時間： 2017-07-07 12:01:44
+-- 產生時間： 2017-08-09 14:02:02
 -- 伺服器版本: 10.1.21-MariaDB
 -- PHP 版本： 5.6.30
 
@@ -38,6 +38,8 @@ CREATE TABLE `abnormal` (
   `created_time` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
 --
 -- 資料表結構 `check_log`
 --
@@ -52,6 +54,8 @@ CREATE TABLE `check_log` (
   `extra` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
 --
 -- 資料表結構 `eqpt`
 --
@@ -65,6 +69,8 @@ CREATE TABLE `eqpt` (
   `check_quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
 --
 -- 資料表結構 `form`
 --
@@ -77,6 +83,8 @@ CREATE TABLE `form` (
   `created_time` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
 --
 -- 資料表結構 `item`
 --
@@ -88,6 +96,8 @@ CREATE TABLE `item` (
   `updated_time` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
 --
 -- 資料表結構 `item_detail`
 --
@@ -98,8 +108,11 @@ CREATE TABLE `item_detail` (
   `item_id` int(11) NOT NULL,
   `location_id` int(11) NOT NULL,
   `created_time` timestamp NULL DEFAULT NULL,
-  `updated_time` timestamp NULL DEFAULT NULL
+  `updated_time` timestamp NULL DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
 -- 資料表結構 `location`
@@ -115,6 +128,8 @@ CREATE TABLE `location` (
   `updated_time` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
 --
 -- 資料表結構 `note`
 --
@@ -126,6 +141,8 @@ CREATE TABLE `note` (
   `created_time` timestamp NULL DEFAULT NULL,
   `updated_time` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
 -- 資料表結構 `user`
@@ -140,7 +157,8 @@ CREATE TABLE `user` (
   `tel` varchar(50) NOT NULL,
   `level` int(11) NOT NULL DEFAULT '0',
   `token` varchar(100) DEFAULT NULL,
-  `remember_token` varchar(100) DEFAULT NULL
+  `remember_token` varchar(100) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -221,22 +239,22 @@ ALTER TABLE `user`
 -- 使用資料表 AUTO_INCREMENT `abnormal`
 --
 ALTER TABLE `abnormal`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 --
 -- 使用資料表 AUTO_INCREMENT `check_log`
 --
 ALTER TABLE `check_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=195;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=270;
 --
 -- 使用資料表 AUTO_INCREMENT `eqpt`
 --
 ALTER TABLE `eqpt`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1721;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2361;
 --
 -- 使用資料表 AUTO_INCREMENT `form`
 --
 ALTER TABLE `form`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
 --
 -- 使用資料表 AUTO_INCREMENT `item`
 --
@@ -256,12 +274,12 @@ ALTER TABLE `location`
 -- 使用資料表 AUTO_INCREMENT `note`
 --
 ALTER TABLE `note`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- 使用資料表 AUTO_INCREMENT `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=226;
 --
 -- 已匯出資料表的限制(Constraint)
 --
@@ -278,7 +296,7 @@ ALTER TABLE `abnormal`
 --
 ALTER TABLE `check_log`
   ADD CONSTRAINT `fk_check_log_item_detail1` FOREIGN KEY (`item_detail_id`) REFERENCES `item_detail` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_sign_log_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_check_log_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- 資料表的 Constraints `eqpt`

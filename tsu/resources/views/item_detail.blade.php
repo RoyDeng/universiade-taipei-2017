@@ -45,6 +45,7 @@
 								<thead>
 									<tr>
 										<th>編號</th>
+										<th>狀態</th>
 										<th>代碼</th>
 										<th>場館</th>
 										<th>新增時間</th>
@@ -56,16 +57,27 @@
 									@foreach ($items -> item_detail as $i => $item)
 									<tr>
 										<td>{{ $i + 1 }}</td>
+										<td>
+											@if ($item -> status == 1)
+											<span class="label label-success">登記</span>
+											@else
+											<span class="label label-danger">註銷</span>
+											@endif
+										</td>
 										<td>{{ $item -> abbr }}</td>
 										<td>{{ $item -> location -> name }}</td>
 										<td>{{ $item -> created_time }}</td>
 										<td>{{ $item -> updated_time }}</td>
 										<td>
 											@if (Auth::user() -> level == 1)
-											<button type="button" class="btn btn-info" data-target="#editItemDetailModal" data-toggle="modal" onclick="editItemDetail('{{ $item -> item_id }}', '{{ $item -> location_id }}')"><i class="fa fa-pencil-square-o"></i></button>
-											@if ($item -> id != 71)
-											<button type="button" class="btn btn-danger" data-target="#removeItemDetailModal" data-toggle="modal" onclick="editItemDetail('{{ $item -> item_id }}', '{{ $item -> location_id }}')"><i class="fa fa-trash"></i></button>
-											@endif
+												@if ($item -> status == 1)
+													<button type="button" class="btn btn-info" data-target="#editItemDetailModal" data-toggle="modal" onclick="editItemDetail('{{ $item -> item_id }}', '{{ $item -> location_id }}')"><i class="fa fa-pencil-square-o"></i></button>
+													@if ($item -> id != 71)
+														<button type="button" class="btn btn-danger" data-target="#removeItemDetailModal" data-toggle="modal" onclick="editItemDetail('{{ $item -> item_id }}', '{{ $item -> location_id }}')"><i class="fa fa-times"></i></button>
+													@endif
+												@else
+													<button type="button" class="btn btn-success" data-target="#applyItemDetailModal" data-toggle="modal" onclick="editItemDetail('{{ $item -> item_id }}', '{{ $item -> location_id }}')"><i class="fa fa-check"></i></button>
+												@endif
 											@endif
 											<input type="hidden" name="hidden_view_detail" id="hidden_view_detail" value="{{url('/item/viewItemDetail')}}">
 										</td>
@@ -169,15 +181,38 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">刪除項目明細</h4>
+				<h4 class="modal-title">註銷項目明細</h4>
 			</div>
 			<div class="modal-body">
 				<i class="fa fa-question-circle fa-lg"></i>  
-				您確定要刪除此項目明細？
+				您確定要註銷此項目明細？
 				<form action="{{ url('/item/removeItemDetail') }}" method="post">
 					{{ csrf_field() }}
 					<input type="hidden" id="remove_item_detail_id" name="id">
-					<button type="submit" class="btn btn-danger">刪除</button>
+					<button type="submit" class="btn btn-danger">註銷</button>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade col-xs-12" id="applyItemDetailModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">登記項目明細</h4>
+			</div>
+			<div class="modal-body">
+				<i class="fa fa-question-circle fa-lg"></i>  
+				您確定要登記此項目明細？
+				<form action="{{ url('/item/applyItemDetail') }}" method="post">
+					{{ csrf_field() }}
+					<input type="hidden" id="apply_item_detail_id" name="id">
+					<button type="submit" class="btn btn-success">登記</button>
 				</form>
 			</div>
 			<div class="modal-footer">
@@ -200,6 +235,7 @@
 				$("#edit_item_detail_id").val(result.id);
 				$("#edit_location_name").val(result.location.name);
 				$("#remove_item_detail_id").val(result.id);
+				$("#apply_item_detail_id").val(result.id);
 			}
 		});
 	}

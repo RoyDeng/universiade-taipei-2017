@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 use \App\Eqpt as EqptEloquent;
 use \App\ItemDetail as ItemDetailEloquent;
-use \App\Notification as NotificationEloquent;
 
 class Location extends Model {
 	protected $table = 'location';
