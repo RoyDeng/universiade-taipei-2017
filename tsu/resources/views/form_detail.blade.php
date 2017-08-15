@@ -106,7 +106,7 @@
 									<tr>
 										<td>{{ $a + 1 }}</td>
 										<td>{{ $abn -> eqpt -> name }}</td>
-										<td>{{ $abn -> quantity }}</td>
+										<td>{{ ((int)$abn -> eqpt -> quantity - (int)$abn -> eqpt -> check_quantity) }}</td>
 										<td>{{ $abn -> remark }}</td>
 										<td><img src="{{ $abn -> pic }}" width="50%"></td>
 										<td><img src="{{ $abn -> signature }}" width="50%"></td>
